@@ -2,7 +2,7 @@ class Sheep:
     isAlive: bool
 
     def __init__(self, id, x, y):
-        self.id = id
+        self.id = id+1
         self.x = x
         self.y = y
         self.isAlive = True
