@@ -1,2 +1,2 @@
 class SheepFactory:
-    print("a")
+    print("abc")
