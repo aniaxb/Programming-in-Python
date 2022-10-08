@@ -1,5 +1,6 @@
 import unittest
 
+from project.factories.SheepFactory import SheepFactory
 from project.logic.GameSimulation import GameSimulation
 from project.logic.MapHelper import MapHelper
 from project.model.Sheep import Sheep
@@ -38,6 +39,10 @@ class MyTestCase(unittest.TestCase):
         sheep.isAlive = False
         self.assertFalse(sheep.isAlive)
 
+    def test_sheep_factory(self):
+        factory = SheepFactory()
+        factory.createSheep(15)
+        self.assertEqual(factory.init_pos_limit, 10)
 
 if __name__ == '__main__':
     unittest.main()
