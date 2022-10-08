@@ -11,3 +11,8 @@ class FileException(Error):
 class SheepViabilityException(Error):
     """All sheep are dead"""
     pass
+
+
+class LogicException(Error):
+    """Error in simulation logic"""
+    pass
