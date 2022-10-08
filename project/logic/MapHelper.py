@@ -1,12 +1,10 @@
-from array import array
-
 from project.model.Sheep import Sheep
 from project.model.Wolf import Wolf
 
 
 class MapHelper:
     @staticmethod
-    def isCoordinateFree(coX: float, coY: float, entityRepository: array):
+    def isCoordinateFree(coX: float, coY: float, entityRepository: list):
         for entity in entityRepository:
             if (coX is entity.coX) and (coY is entity.coY):
                 if isinstance(entity, Sheep):
