@@ -3,15 +3,17 @@ from project.model.Sheep import Sheep
 
 class SheepFactory:
 
-    def __init__(self, init_pos_limit):
-        self.init_pos_limit = init_pos_limit
+    # def __init__(self, init_pos_limit):
+    #     self.init_pos_limit = init_pos_limit
+
+    init_pos_limit = 10
 
     def createSheep(self, number):
         list = []
         for i in range(number):
             randomCoordinatesX = round(random.uniform(0.000, self.init_pos_limit), 3)
             randomCoordinatesY = round(random.uniform(0.000, self.init_pos_limit), 3)
-            list.append(Sheep(i, randomCoordinatesX, randomCoordinatesY))
+            list.append(Sheep(i+1, randomCoordinatesX, randomCoordinatesY))
         for obj in list:
             print(obj.__str__())
 
