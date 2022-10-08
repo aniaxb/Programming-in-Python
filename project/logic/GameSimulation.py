@@ -1,3 +1,4 @@
+from project.exceptions.Exceptions import SheepViabilityException
 from project.model.Sheep import Sheep
 from project.model.Wolf import Wolf
 
@@ -12,9 +13,25 @@ class GameSimulation:
         self.entityRepository = list()
 
     def startSimulation(self, rounds_number):
-        self.entityRepository.append(Wolf(0, 0))
-        self.entityRepository.append(Sheep(1, 2, 3))
-        return self.entityRepository
+        try:
+            self.entityRepository.append(Wolf(0, 0))
+            # create sheep with SheepFactory
+
+            for i in range(rounds_number):
+                self.moveSheeps()
+                self.moveWolf()
+            return True
+
+        except SheepViabilityException:
+            return True
+        except Exception:
+            return False
 
     def moveSheeps(self):
         return ""
+
+    def moveWolf(self):
+        return ""
+
+    def __str__(self):
+        return "GameSimulation Map Status[" + str(self.entityRepository) + "]"

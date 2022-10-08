@@ -40,9 +40,9 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(sheep.isAlive)
 
     def test_sheep_factory(self):
-        factory = SheepFactory()
-        factory.createSheep(15)
-        self.assertEqual(factory.init_pos_limit, 10)
+        factory = SheepFactory().createSheep(15)
+        self.assertEqual(len(factory), 15)
+
 
 if __name__ == '__main__':
     unittest.main()
