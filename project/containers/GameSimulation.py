@@ -13,9 +13,10 @@ class GameSimulation:
         self.wolf_move_dist = wolf_move_dist
         sheepRepository = SheepFactory(init_pos_limit).createSheep(sheep_amount)
 
-    def startSimmulation(self, rounds_number):
+    @classmethod
+    def startSimmulation(cls, rounds_number):
         return ""
 
-
-    def moveSheeps(self):
+    @classmethod
+    def moveSheeps(cls):
         return ""
