@@ -43,6 +43,10 @@ class MyTestCase(unittest.TestCase):
         factory = SheepFactory().createSheep(15)
         self.assertEqual(len(factory), 15)
 
+    def test_simulation(self):
+        game = GameSimulation(10, 15, 0.5, 1)
+        self.assertTrue(game.startSimulation(50))
+
 
 if __name__ == '__main__':
     unittest.main()

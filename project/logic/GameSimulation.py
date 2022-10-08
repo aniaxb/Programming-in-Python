@@ -1,4 +1,5 @@
 from project.exceptions.Exceptions import SheepViabilityException
+from project.factories.SheepFactory import SheepFactory
 from project.model.Sheep import Sheep
 from project.model.Wolf import Wolf
 
@@ -14,8 +15,8 @@ class GameSimulation:
 
     def startSimulation(self, rounds_number):
         try:
+            self.entityRepository = SheepFactory().createSheep(self.sheep_amount)
             self.entityRepository.append(Wolf(0, 0))
-            # create sheep with SheepFactory
 
             for i in range(rounds_number):
                 self.moveSheeps()
