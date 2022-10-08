@@ -1,13 +1,13 @@
 import random
 
-from project.exceptions.Exceptions import SheepViabilityException, LogicException
-from project.factories.SheepFactory import SheepFactory
-from project.logic.MapHelper import MapHelper
-from project.model.Wolf import Wolf
-from project.model.Sheep import Sheep
+from project.exceptions.exceptions import sheep_viability_exception, logic_exception
+from project.factories.sheepFactory import SheepFactory
+from project.logic.mapHelper import MapHelper
+from project.model.wolf import Wolf
+from project.model.sheep import Sheep
 
 
-def simulateDirectory():
+def simulate_direction():
     return random.choice("NEWS")
 
 
@@ -20,28 +20,28 @@ class GameSimulation:
         self.wolf_move_dist = wolf_move_dist
         self.entityRepository = list()
 
-    def startSimulation(self, rounds_number):
-        self.entityRepository = SheepFactory().createSheep(self.sheep_amount)
+    def start_simulation(self, rounds_number):
+        self.entityRepository = SheepFactory().create_sheep(self.sheep_amount)
         self.entityRepository.append(Wolf(0, 0))
         try:
             for i in range(rounds_number):
                 print("rounds_number:" + str(i) + "\n" + self.__str__())
-                self.moveSheeps()
-                self.moveWolf()
+                self.move_sheeps()
+                self.move_wolf()
             return True
-        except SheepViabilityException:
+        except sheep_viability_exception:
             return False
 
-    def moveSheeps(self):
+    def move_sheeps(self):
         for sheep in self.entityRepository:
             if isinstance(sheep, Sheep):
-                self.changeCoordinates(sheep)
+                self.change_coordinates(sheep)
                     #TODO: draw coordinates or switching to emergency state and checking NEWS manually
 
-    def changeCoordinates(self, sheep: Sheep):
+    def change_coordinates(self, sheep: Sheep):
         genX = sheep.coX
         genY = sheep.coY
-        match simulateDirectory():
+        match simulate_direction():
             case "N":
                 genY += self.sheep_move_dist
             case "S":
@@ -51,14 +51,14 @@ class GameSimulation:
             case "E":
                 genX += self.sheep_move_dist
             case _:
-                raise LogicException()
-        if MapHelper.isCoordinateFree(genX, genY, self.entityRepository):
+                raise logic_exception()
+        if MapHelper.is_coordinate_empty(genX, genY, self.entityRepository):
             sheep.coX = genX
             sheep.coY = genY
             return True
         return False
 
-    def moveWolf(self):
+    def move_wolf(self):
         return ""
 
     def __str__(self):

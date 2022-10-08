@@ -1,4 +1,4 @@
-from project.model.Entity import Entity
+from project.model.entity import Entity
 
 
 class Sheep(Entity):
