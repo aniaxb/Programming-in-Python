@@ -3,11 +3,16 @@ class Error(Exception):
     pass
 
 
-class FileException(Error):
+class file_exception(Error):
     """Error while operating with the file"""
     pass
 
 
-class SheepViabilityException(Error):
+class sheep_viability_exception(Error):
     """All sheep are dead"""
+    pass
+
+
+class logic_exception(Error):
+    """Error in simulation logic"""
     pass

@@ -1,10 +1,10 @@
-from project.model.Sheep import Sheep
-from project.model.Wolf import Wolf
+from project.model.sheep import Sheep
+from project.model.wolf import Wolf
 
 
 class MapHelper:
     @staticmethod
-    def isCoordinateFree(coX: float, coY: float, entityRepository: list):
+    def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
         for entity in entityRepository:
             if (coX is entity.coX) and (coY is entity.coY):
                 if isinstance(entity, Sheep):
