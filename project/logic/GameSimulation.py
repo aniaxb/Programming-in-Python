@@ -1,6 +1,5 @@
 from project.exceptions.Exceptions import SheepViabilityException
 from project.factories.SheepFactory import SheepFactory
-from project.model.Sheep import Sheep
 from project.model.Wolf import Wolf
 
 
