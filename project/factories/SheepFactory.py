@@ -1,5 +1,5 @@
 import random
-from project.model.sheep import Sheep
+from project.model.Sheep import Sheep
 
 class SheepFactory:
 

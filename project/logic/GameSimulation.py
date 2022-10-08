@@ -1,5 +1,5 @@
-from project.model.sheep import Sheep
-from project.model.wolf import Wolf
+from project.model.Sheep import Sheep
+from project.model.Wolf import Wolf
 
 
 class GameSimulation:
