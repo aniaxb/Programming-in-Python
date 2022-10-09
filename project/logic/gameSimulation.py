@@ -59,17 +59,30 @@ class GameSimulation:
             sheep.coX = genX
             sheep.coY = genY
             return
+        else:
+            logging.warning("The drawn coordinate is busy")
+            self.emergency_move(sheep)
 
-        logging.warning("The drawn coordinate is busy")
-        emergency_moving(sheep)
-        return
-
-    def emergency_moving(self, sheep: Sheep):
-        logging.error("Cannot move Sheep!")
-        return ""
+    def emergency_move(self, sheep: Sheep):
+        genX = sheep.coX
+        genY = sheep.coY
+        if is_coordinate_empty(genX, genY + self.sheep_move_dist, self.entityRepository):
+            sheep.coY = genY + self.sheep_move_dist
+            return
+        elif is_coordinate_empty(genX, genY - self.sheep_move_dist, self.entityRepository):
+            sheep.coY = genY - self.sheep_move_dist
+            return
+        elif is_coordinate_empty(genX + self.sheep_move_dist, genY, self.entityRepository):
+            sheep.coX = genX + self.sheep_move_dist
+            return
+        elif is_coordinate_empty(genX - self.sheep_move_dist, genY, self.entityRepository):
+            sheep.coX = genX + self.sheep_move_dist
+            return
+        else:
+            logging.error("Cannot move Sheep!")
 
     def __str__(self):
         result = ""
         for entity in self.entityRepository:
             result = result + entity.__str__() + "\n"
-        return "GameSimulation Map Status[" + result + "]"
+        return "GameSimulation Map Status[\n" + result + "]"
