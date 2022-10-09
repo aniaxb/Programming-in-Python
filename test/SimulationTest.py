@@ -1,8 +1,9 @@
+import logging
 import unittest
 
 from project.factories.sheepFactory import SheepFactory
 from project.logic.gameSimulation import GameSimulation
-from project.logic.mapHelper import MapHelper
+from project.logic.mapHelper import is_coordinate_empty
 from project.model.sheep import Sheep
 from project.model.wolf import Wolf
 
@@ -14,12 +15,12 @@ class MyTestCase(unittest.TestCase):
         repo.append(Sheep(1, 1, 2))
 
         self.assertEqual(len(repo), 2)
-        self.assertEqual(MapHelper.is_coordinate_empty(1, 1, repo), False)
-        self.assertEqual(MapHelper.is_coordinate_empty(1, 2, repo), False)
-        self.assertEqual(MapHelper.is_coordinate_empty(1, 3, repo), True)
+        self.assertEqual(is_coordinate_empty(1, 1, repo), False)
+        self.assertEqual(is_coordinate_empty(1, 2, repo), False)
+        self.assertEqual(is_coordinate_empty(1, 3, repo), True)
 
         repo[0].isAlive = False
-        self.assertEqual(MapHelper.is_coordinate_empty(1, 1, repo), True)
+        self.assertEqual(is_coordinate_empty(1, 1, repo), True)
 
     def test_Wolf(self):
         wolf = Wolf(0, 1)
