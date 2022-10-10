@@ -42,6 +42,8 @@ class GameSimulation:
         return ""
 
     def change_coordinates(self, sheep: Sheep):
+        if not sheep.isAlive:
+            return
         genX = sheep.coX
         genY = sheep.coY
         match simulate_direction():
@@ -79,7 +81,7 @@ class GameSimulation:
             sheep.coX = genX + self.sheep_move_dist
             return
         else:
-            logging.error("Cannot move Sheep!")
+            logging.warning("Cannot move Sheep!")
 
     def __str__(self):
         result = ""

@@ -10,8 +10,12 @@ class SheepFactory:
     def create_sheep(self, number):
         sheepList = list()
         while len(sheepList) < int(number):
-            generatedX = round(random.uniform(-self.init_pos_limit, self.init_pos_limit), 2)
-            generatedY = round(random.uniform(-self.init_pos_limit, self.init_pos_limit), 2)
+            generatedX = self.drawValue()
+            generatedY = self.drawValue()
             if is_coordinate_empty(generatedX, generatedY, sheepList):
                 sheepList.append(Sheep(len(sheepList) + 1, generatedX, generatedY))
         return sheepList
+
+    def drawValue(self):
+        value = float(random.uniform(-self.init_pos_limit, self.init_pos_limit))
+        return float(f'{value:.3f}')
