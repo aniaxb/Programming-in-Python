@@ -18,4 +18,4 @@ class SheepFactory:
 
     def drawValue(self):
         value = float(random.uniform(-self.init_pos_limit, self.init_pos_limit))
-        return float(f'{value:.3f}')
+        return round(value, 3)
