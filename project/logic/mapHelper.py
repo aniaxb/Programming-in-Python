@@ -10,3 +10,7 @@ def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
             elif isinstance(entity, Wolf):
                 return False
     return True
+
+
+def detect_nearest_sheep(entityRepository: list):
+    return None

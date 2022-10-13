@@ -4,6 +4,7 @@ import random
 from project.exceptions.exceptions import sheep_viability_exception, logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import is_coordinate_empty
+from project.logic.mapHelper import detect_nearest_sheep
 from project.model.wolf import Wolf
 from project.model.sheep import Sheep
 
@@ -24,25 +25,30 @@ class GameSimulation:
     def start_simulation(self, rounds_number):
         self.entityRepository = SheepFactory().create_sheep(self.sheep_amount)
         self.entityRepository.append(Wolf(0, 0))
-        try:
-            for i in range(rounds_number):
+        for i in range(rounds_number):
+            try:
                 logging.info("rounds_number:" + str(i + 1) + "\n" + self.__str__())
                 self.move_sheeps()
                 self.move_wolf()
-            return True
-        except sheep_viability_exception:
-            return False
+            except sheep_viability_exception:
+                logging.info("All sheeps are dead")
+                return
 
     def move_sheeps(self):
         for sheep in self.entityRepository:
             if isinstance(sheep, Sheep):
-                self.change_coordinates(sheep)
+                self.change_sheep_coordinates(sheep)
 
     def move_wolf(self):
-        return ""
+        nearestSheep = detect_nearest_sheep(self.entityRepository)
+        if nearestSheep is not None:
+            self.change_wolf_coordinates(nearestSheep)
+        else:
+            raise sheep_viability_exception()
 
-    def change_coordinates(self, sheep: Sheep):
+    def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
+            logging.info("Sheep is not alive")
             return
         genX = sheep.coX
         genY = sheep.coY
@@ -82,6 +88,9 @@ class GameSimulation:
             return
         else:
             logging.warning("Cannot move Sheep!")
+
+    def change_wolf_coordinates(self, sheep: Sheep):
+        return None
 
     def __str__(self):
         result = ""
