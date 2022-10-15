@@ -10,3 +10,12 @@ def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
             elif isinstance(entity, Wolf):
                 return False
     return True
+
+
+def detect_nearest_sheep(entityRepository: list):
+    local_wolf = entityRepository[len(entityRepository) - 1]
+    copy_list = entityRepository
+    copy_list.remove(local_wolf)
+    for entity in entityRepository:
+        print(entity)
+    return None
