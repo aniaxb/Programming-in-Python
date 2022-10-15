@@ -42,7 +42,8 @@ class GameSimulation:
     def move_wolf(self):
         nearestSheep = detect_nearest_sheep(self.entityRepository)
         if nearestSheep is not None:
-            self.change_wolf_coordinates(nearestSheep)
+            if not self.is_wolf_able_to_eat():
+                self.change_wolf_coordinates(nearestSheep)
         else:
             raise sheep_viability_exception()
 
@@ -91,6 +92,10 @@ class GameSimulation:
 
     def change_wolf_coordinates(self, sheep: Sheep):
         return None
+
+    def is_wolf_able_to_eat(self):
+        # eat sheep = true else false
+        return True
 
     def __str__(self):
         result = ""
