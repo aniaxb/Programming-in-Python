@@ -1,3 +1,5 @@
+import random
+
 from project.model.sheep import Sheep
 from project.model.wolf import Wolf
 
@@ -19,3 +21,7 @@ def detect_nearest_sheep(entityRepository: list):
     for entity in entityRepository:
         print(entity)
     return None
+
+
+def simulate_direction():
+    return random.choice("NEWS")

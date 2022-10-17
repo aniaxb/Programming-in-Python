@@ -1,16 +1,12 @@
 import logging
-import random
 
 from project.exceptions.exceptions import sheep_viability_exception, logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import is_coordinate_empty
 from project.logic.mapHelper import detect_nearest_sheep
+from project.logic.mapHelper import simulate_direction
 from project.model.wolf import Wolf
 from project.model.sheep import Sheep
-
-
-def simulate_direction():
-    return random.choice("NEWS")
 
 
 class GameSimulation:
@@ -40,6 +36,10 @@ class GameSimulation:
                 self.change_sheep_coordinates(sheep)
 
     def move_wolf(self):
+        #calculate the distances
+        #check if is_wolf_able_to_eat()
+        #else change cords
+
         nearestSheep = detect_nearest_sheep(self.entityRepository)
         if nearestSheep is not None:
             if not self.is_wolf_able_to_eat():
