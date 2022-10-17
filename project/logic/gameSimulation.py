@@ -3,9 +3,9 @@ import logging
 from project.exceptions.exceptions import sheep_viability_exception, logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import is_coordinate_empty
-from project.logic.mapHelper import detect_nearest_sheep
 from project.logic.mapHelper import simulate_direction
 from project.logic.mapHelper import calculate_distances
+from project.logic.mapHelper import get_sheep_cords
 from project.model.wolf import Wolf
 from project.model.sheep import Sheep
 
@@ -24,9 +24,9 @@ class GameSimulation:
         self.entityRepository.append(Wolf(0, 0))
         for i in range(rounds_number):
             try:
-                logging.info("rounds_number:" + str(i + 1) + "\n" + self.__str__())
                 self.move_sheeps()
                 self.move_wolf()
+                logging.info("rounds_number:" + str(i + 1) + "\n" + self.__str__())
             except sheep_viability_exception:
                 logging.info("All sheeps are dead")
                 return
@@ -39,11 +39,11 @@ class GameSimulation:
     def move_wolf(self):
         calculate_distances(self.entityRepository)
         if not self.is_wolf_able_to_eat():
+            print("nie umiem")
             self.change_wolf_coordinates()
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
-            logging.info("Sheep is not alive")
             return
         genX = sheep.coX
         genY = sheep.coY
@@ -88,8 +88,15 @@ class GameSimulation:
         return None
 
     def is_wolf_able_to_eat(self):
-        # eat sheep = true else false
-        return True
+        for entity in self.entityRepository:
+            if isinstance(entity, Sheep):
+                if entity.distance <= 1 and entity.isAlive:
+                    entity.isAlive = False
+                    wolf = self.entityRepository[len(self.entityRepository) - 1]
+                    get_sheep_cords(entity, wolf)
+                    self.entityRepository[len(self.entityRepository) - 1].sheep_counter += 1
+                    return True
+        return False
 
     def __str__(self):
         result = ""

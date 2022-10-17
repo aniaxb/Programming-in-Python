@@ -9,7 +9,7 @@ class Wolf(Entity):
 
     def __str__(self):
         return "Wolf[" \
-               + ", coX= " + str(self.coX) \
-               + ", coY= " + str(self.coY) \
+               + "coX= " + str(round(self.coX, 3)) \
+               + ", coY= " + str(round(self.coY, 3)) \
                + ", kills= " + str(self.sheep_counter) \
                + "]"
