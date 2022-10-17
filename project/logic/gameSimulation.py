@@ -1,16 +1,13 @@
 import logging
-import random
 
 from project.exceptions.exceptions import sheep_viability_exception, logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import is_coordinate_empty
-from project.logic.mapHelper import detect_nearest_sheep
+from project.logic.mapHelper import simulate_direction
+from project.logic.mapHelper import calculate_distances
+from project.logic.mapHelper import get_sheep_cords
 from project.model.wolf import Wolf
 from project.model.sheep import Sheep
-
-
-def simulate_direction():
-    return random.choice("NEWS")
 
 
 class GameSimulation:
@@ -27,9 +24,9 @@ class GameSimulation:
         self.entityRepository.append(Wolf(0, 0))
         for i in range(rounds_number):
             try:
-                logging.info("rounds_number:" + str(i + 1) + "\n" + self.__str__())
                 self.move_sheeps()
                 self.move_wolf()
+                logging.info("rounds_number:" + str(i + 1) + "\n" + self.__str__())
             except sheep_viability_exception:
                 logging.info("All sheeps are dead")
                 return
@@ -40,16 +37,13 @@ class GameSimulation:
                 self.change_sheep_coordinates(sheep)
 
     def move_wolf(self):
-        nearestSheep = detect_nearest_sheep(self.entityRepository)
-        if nearestSheep is not None:
-            if not self.is_wolf_able_to_eat():
-                self.change_wolf_coordinates(nearestSheep)
-        else:
-            raise sheep_viability_exception()
+        nearestSheep: Sheep = calculate_distances(self.entityRepository)
+        if not self.is_wolf_able_to_eat():
+            self.change_wolf_coordinates(nearestSheep)
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
-            logging.info("Sheep is not alive")
+            logging.debug("Sheep ID: " + str(sheep.id) + " is dead")
             return
         genX = sheep.coX
         genY = sheep.coY
@@ -69,33 +63,46 @@ class GameSimulation:
             sheep.coY = genY
             return
         else:
-            logging.warning("The drawn coordinate is busy")
+            logging.debug("The drawn coordinate is busy")
             self.emergency_move(sheep)
 
     def emergency_move(self, sheep: Sheep):
         genX = sheep.coX
         genY = sheep.coY
         if is_coordinate_empty(genX, genY + self.sheep_move_dist, self.entityRepository):
+            logging.debug("managed to change the coordinates to the N")
             sheep.coY = genY + self.sheep_move_dist
             return
         elif is_coordinate_empty(genX, genY - self.sheep_move_dist, self.entityRepository):
+            logging.debug("managed to change the coordinates to the S")
             sheep.coY = genY - self.sheep_move_dist
             return
         elif is_coordinate_empty(genX + self.sheep_move_dist, genY, self.entityRepository):
+            logging.debug("managed to change the coordinates to the E")
             sheep.coX = genX + self.sheep_move_dist
             return
         elif is_coordinate_empty(genX - self.sheep_move_dist, genY, self.entityRepository):
+            logging.debug("managed to change the coordinates to the W")
             sheep.coX = genX + self.sheep_move_dist
             return
         else:
-            logging.warning("Cannot move Sheep!")
+            logging.debug("Cannot move Sheep!, This entity is blocked")
 
     def change_wolf_coordinates(self, sheep: Sheep):
+        # TODO: wolf movement
         return None
 
     def is_wolf_able_to_eat(self):
-        # eat sheep = true else false
-        return True
+        for entity in self.entityRepository:
+            if isinstance(entity, Sheep):
+                if entity.distance <= self.wolf_move_dist and entity.isAlive:
+                    logging.debug("Wolf is eating sheep ID: " + str(entity.id))
+                    entity.isAlive = False
+                    wolf = self.entityRepository[len(self.entityRepository) - 1]
+                    get_sheep_cords(entity, wolf)
+                    self.entityRepository[len(self.entityRepository) - 1].sheep_counter += 1
+                    return True
+        return False
 
     def __str__(self):
         result = ""

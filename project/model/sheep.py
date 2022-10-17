@@ -5,7 +5,7 @@ class Sheep(Entity):
 
     def __init__(self, id, coX, coY):
         super().__init__(coX, coY)
-        self.distance = None
+        self.distance = 0
         self.id = id
         self.isAlive = True
 
