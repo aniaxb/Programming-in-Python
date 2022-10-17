@@ -5,6 +5,7 @@ from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import is_coordinate_empty
 from project.logic.mapHelper import detect_nearest_sheep
 from project.logic.mapHelper import simulate_direction
+from project.logic.mapHelper import calculate_distances
 from project.model.wolf import Wolf
 from project.model.sheep import Sheep
 
@@ -36,16 +37,9 @@ class GameSimulation:
                 self.change_sheep_coordinates(sheep)
 
     def move_wolf(self):
-        #calculate the distances
-        #check if is_wolf_able_to_eat()
-        #else change cords
-
-        nearestSheep = detect_nearest_sheep(self.entityRepository)
-        if nearestSheep is not None:
-            if not self.is_wolf_able_to_eat():
-                self.change_wolf_coordinates(nearestSheep)
-        else:
-            raise sheep_viability_exception()
+        calculate_distances(self.entityRepository)
+        if not self.is_wolf_able_to_eat():
+            self.change_wolf_coordinates()
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
@@ -90,7 +84,7 @@ class GameSimulation:
         else:
             logging.warning("Cannot move Sheep!")
 
-    def change_wolf_coordinates(self, sheep: Sheep):
+    def change_wolf_coordinates(self):
         return None
 
     def is_wolf_able_to_eat(self):

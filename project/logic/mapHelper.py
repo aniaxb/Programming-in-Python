@@ -14,6 +14,14 @@ def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
     return True
 
 
+def calculate_distances(entityRepository: list):
+    local_wolf = entityRepository[len(entityRepository) - 1]
+    entityRepository.remove(local_wolf)
+    for entity in entityRepository:
+        print(entity)
+    # if ale sheeps are dead raise sheep_viability_exception()
+
+
 def detect_nearest_sheep(entityRepository: list):
     local_wolf = entityRepository[len(entityRepository) - 1]
     copy_list = entityRepository
