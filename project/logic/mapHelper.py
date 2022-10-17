@@ -1,5 +1,6 @@
 import random
 
+from project.exceptions.exceptions import sheep_viability_exception
 from project.model.sheep import Sheep
 from project.model.wolf import Wolf
 
@@ -15,11 +16,13 @@ def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
 
 
 def calculate_distances(entityRepository: list):
-    local_wolf = entityRepository[len(entityRepository) - 1]
+    local_wolf: Wolf = entityRepository[len(entityRepository) - 1]
+    if local_wolf.sheep_counter == len(entityRepository):
+        raise sheep_viability_exception()
     entityRepository.remove(local_wolf)
     for entity in entityRepository:
         print(entity)
-    # if ale sheeps are dead raise sheep_viability_exception()
+    entityRepository.append(local_wolf)
 
 
 def detect_nearest_sheep(entityRepository: list):
