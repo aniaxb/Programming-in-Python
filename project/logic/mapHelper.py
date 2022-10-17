@@ -22,6 +22,7 @@ def calculate_distances(entityRepository: list):
     entityRepository.remove(local_wolf)
     for entity in entityRepository:
         if entity.isAlive:
+            # TODO: calculate distance
             entity.distance = 1
     entityRepository.append(local_wolf)
 

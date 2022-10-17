@@ -37,13 +37,13 @@ class GameSimulation:
                 self.change_sheep_coordinates(sheep)
 
     def move_wolf(self):
-        calculate_distances(self.entityRepository)
+        nearestSheep: Sheep = calculate_distances(self.entityRepository)
         if not self.is_wolf_able_to_eat():
-            print("nie umiem")
-            self.change_wolf_coordinates()
+            self.change_wolf_coordinates(nearestSheep)
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
+            logging.debug("Sheep ID: " + str(sheep.id) + " is dead")
             return
         genX = sheep.coX
         genY = sheep.coY
@@ -63,34 +63,40 @@ class GameSimulation:
             sheep.coY = genY
             return
         else:
-            logging.warning("The drawn coordinate is busy")
+            logging.debug("The drawn coordinate is busy")
             self.emergency_move(sheep)
 
     def emergency_move(self, sheep: Sheep):
         genX = sheep.coX
         genY = sheep.coY
         if is_coordinate_empty(genX, genY + self.sheep_move_dist, self.entityRepository):
+            logging.debug("managed to change the coordinates to the N")
             sheep.coY = genY + self.sheep_move_dist
             return
         elif is_coordinate_empty(genX, genY - self.sheep_move_dist, self.entityRepository):
+            logging.debug("managed to change the coordinates to the S")
             sheep.coY = genY - self.sheep_move_dist
             return
         elif is_coordinate_empty(genX + self.sheep_move_dist, genY, self.entityRepository):
+            logging.debug("managed to change the coordinates to the E")
             sheep.coX = genX + self.sheep_move_dist
             return
         elif is_coordinate_empty(genX - self.sheep_move_dist, genY, self.entityRepository):
+            logging.debug("managed to change the coordinates to the W")
             sheep.coX = genX + self.sheep_move_dist
             return
         else:
-            logging.warning("Cannot move Sheep!")
+            logging.debug("Cannot move Sheep!, This entity is blocked")
 
-    def change_wolf_coordinates(self):
+    def change_wolf_coordinates(self, sheep: Sheep):
+        # TODO: wolf movement
         return None
 
     def is_wolf_able_to_eat(self):
         for entity in self.entityRepository:
             if isinstance(entity, Sheep):
                 if entity.distance <= self.wolf_move_dist and entity.isAlive:
+                    logging.debug("Wolf is eating sheep ID: " + str(entity.id))
                     entity.isAlive = False
                     wolf = self.entityRepository[len(self.entityRepository) - 1]
                     get_sheep_cords(entity, wolf)
