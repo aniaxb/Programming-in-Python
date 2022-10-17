@@ -90,7 +90,7 @@ class GameSimulation:
     def is_wolf_able_to_eat(self):
         for entity in self.entityRepository:
             if isinstance(entity, Sheep):
-                if entity.distance <= 1 and entity.isAlive:
+                if entity.distance <= self.wolf_move_dist and entity.isAlive:
                     entity.isAlive = False
                     wolf = self.entityRepository[len(self.entityRepository) - 1]
                     get_sheep_cords(entity, wolf)
