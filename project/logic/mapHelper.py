@@ -33,4 +33,3 @@ def simulate_direction():
 def get_sheep_cords(sheep: Sheep, wolf: Wolf):
     wolf.coX = sheep.coX
     wolf.coY = sheep.coY
-    print(str(sheep.coX) + " " + str(sheep.coY))
