@@ -1,6 +1,7 @@
 import random
 import math
 
+from decimal import Decimal
 from project.exceptions.exceptions import sheep_viability_exception
 from project.model.sheep import Sheep
 from project.model.wolf import Wolf
@@ -21,11 +22,14 @@ def calculate_distances(entityRepository: list):
     if local_wolf.sheep_counter == len(entityRepository) - 1:
         raise sheep_viability_exception()
     entityRepository.remove(local_wolf)
-    shortestDistanceSheep: Sheep = entityRepository[0]
+    shortestDistanceSheep: Sheep = None
     for entity in entityRepository:
         if entity.isAlive:
             entity.distance = round(math.sqrt(pow(entity.getX() - local_wolf.getX(), 2) + pow(entity.getY() - local_wolf.getY(), 2)), 3)
-            if entity.distance < shortestDistanceSheep.distance:
+            # float(round(Decimal(math.sqrt(pow(entity.getX() - local_wolf.getX(), 2) + pow(entity.getY() - local_wolf.getY(), 2))), 3))
+            if shortestDistanceSheep is None:
+                shortestDistanceSheep = entity
+            elif entity.distance < shortestDistanceSheep.distance:
                 shortestDistanceSheep = entity
     entityRepository.append(local_wolf)
     return shortestDistanceSheep
