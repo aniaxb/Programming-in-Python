@@ -1,4 +1,5 @@
 import random
+import math
 
 from project.exceptions.exceptions import sheep_viability_exception
 from project.model.sheep import Sheep
@@ -20,11 +21,14 @@ def calculate_distances(entityRepository: list):
     if local_wolf.sheep_counter == len(entityRepository) - 1:
         raise sheep_viability_exception()
     entityRepository.remove(local_wolf)
+    shortestDistanceSheep: Sheep = entityRepository[0]
     for entity in entityRepository:
         if entity.isAlive:
-            # TODO: calculate distance
-            entity.distance = 1
+            entity.distance = math.sqrt(pow(entity.coX - local_wolf.coX, 2) + pow(entity.coY - local_wolf.coY, 2))
+            if entity.distance < shortestDistanceSheep.distance:
+                shortestDistanceSheep = entity
     entityRepository.append(local_wolf)
+    return shortestDistanceSheep
 
 
 def simulate_direction():
