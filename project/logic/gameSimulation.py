@@ -88,9 +88,10 @@ class GameSimulation:
         else:
             logging.debug("Cannot move Sheep!, This entity is blocked")
 
-    def change_wolf_coordinates(self, sheep: Sheep):
-        # TODO: wolf movement
-        return None
+    def change_wolf_coordinates(self, nearestSheep: Sheep):
+        local_wolf: Wolf = self.entityRepository[len(self.entityRepository) - 1]
+        local_wolf.coX += round(self.wolf_move_dist * ((nearestSheep.getX() - local_wolf.getX()) / nearestSheep.distance), 3)
+        local_wolf.coY += round(self.wolf_move_dist * ((nearestSheep.getY() - local_wolf.getY()) / nearestSheep.distance), 3)
 
     def is_wolf_able_to_eat(self):
         for entity in self.entityRepository:
