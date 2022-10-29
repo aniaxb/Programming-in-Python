@@ -24,7 +24,7 @@ def calculate_distances(entityRepository: list):
     shortestDistanceSheep: Sheep = None
     for entity in entityRepository:
         if entity.isAlive:
-            entity.distance = round(math.sqrt(pow(entity.getX() - local_wolf.getX(), 2) + pow(entity.getY() - local_wolf.getY(), 2)), 3)
+            entity.distance = round(math.sqrt(pow(entity.get_x() - local_wolf.get_x(), 2) + pow(entity.get_y() - local_wolf.get_y(), 2)), 3)
             if shortestDistanceSheep is None:
                 shortestDistanceSheep = entity
             elif entity.distance < shortestDistanceSheep.distance:

@@ -90,8 +90,8 @@ class GameSimulation:
 
     def change_wolf_coordinates(self, nearestSheep: Sheep):
         local_wolf: Wolf = self.entityRepository[len(self.entityRepository) - 1]
-        local_wolf.coX += round(self.wolf_move_dist * ((nearestSheep.getX() - local_wolf.getX()) / nearestSheep.distance), 3)
-        local_wolf.coY += round(self.wolf_move_dist * ((nearestSheep.getY() - local_wolf.getY()) / nearestSheep.distance), 3)
+        local_wolf.coX += round(self.wolf_move_dist * ((nearestSheep.get_x() - local_wolf.get_x()) / nearestSheep.distance), 3)
+        local_wolf.coY += round(self.wolf_move_dist * ((nearestSheep.get_y() - local_wolf.get_y()) / nearestSheep.distance), 3)
 
     def is_wolf_able_to_eat(self):
         for entity in self.entityRepository:

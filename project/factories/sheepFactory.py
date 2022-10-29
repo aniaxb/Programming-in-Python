@@ -5,7 +5,6 @@ from project.model.sheep import Sheep
 
 
 class SheepFactory:
-
     def __init__(self, init_pos_limit):
         self.init_pos_limit = init_pos_limit
 
