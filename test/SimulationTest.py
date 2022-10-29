@@ -1,4 +1,3 @@
-import logging
 import unittest
 
 from project.factories.sheepFactory import SheepFactory
@@ -41,12 +40,12 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(sheep.isAlive)
 
     def test_sheep_factory(self):
-        factory = SheepFactory().create_sheep(15)
+        factory = SheepFactory(10).create_sheep(15)
         self.assertEqual(len(factory), 15)
 
     def test_simulation(self):
         game = GameSimulation(10, 15, 0.5, 1)
-        self.assertTrue(game.start_simulation(50))
+        game.start_simulation(50)
 
 
 if __name__ == '__main__':

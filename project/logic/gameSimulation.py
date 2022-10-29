@@ -20,7 +20,7 @@ class GameSimulation:
         self.entityRepository = list()
 
     def start_simulation(self, rounds_number):
-        self.entityRepository = SheepFactory().create_sheep(self.sheep_amount)
+        self.entityRepository = SheepFactory(self.init_pos_limit).create_sheep(self.sheep_amount)
         self.entityRepository.append(Wolf(0, 0))
         for i in range(rounds_number):
             try:
