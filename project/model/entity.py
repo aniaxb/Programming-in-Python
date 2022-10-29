@@ -3,8 +3,8 @@ class Entity:
         self.coX = coX
         self.coY = coY
 
-    def getX(self):
+    def get_x(self):
         return round(self.coX, 3)
 
-    def getY(self):
+    def get_y(self):
         return round(self.coY, 3)
