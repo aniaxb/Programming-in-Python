@@ -26,7 +26,7 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(wolf.coX, 0)
         self.assertEqual(wolf.coY, 1)
-        self.assertEqual(wolf.sheep_counter, 0)
+        self.assertEqual(wolf.killed_sheep, 0)
 
     def test_Sheep(self):
         sheep = Sheep(0, 1, 2)

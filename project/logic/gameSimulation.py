@@ -1,14 +1,13 @@
 import logging
 
-from project.dao.FileHelper import csv_export
-from project.exceptions.exceptions import sheep_viability_exception, logic_exception
+from project.exceptions.exceptions import logic_exception
 from project.factories.sheepFactory import SheepFactory
-from project.logic.mapHelper import is_coordinate_empty
-from project.logic.mapHelper import simulate_direction
 from project.logic.mapHelper import calculate_distances
 from project.logic.mapHelper import get_sheep_cords
-from project.model.wolf import Wolf
+from project.logic.mapHelper import is_coordinate_empty
+from project.logic.mapHelper import simulate_direction
 from project.model.sheep import Sheep
+from project.model.wolf import Wolf
 
 
 class GameSimulation:
@@ -24,22 +23,27 @@ class GameSimulation:
     def start_simulation(self, rounds_number):
         self.sheep_list = SheepFactory(self.init_pos_limit).create_sheep(self.sheep_amount)
         for i in range(1, rounds_number + 1):
-            try:
-                self.move_alive_sheep()
-                [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
-                self.move_wolf()
-                logging.info("rounds_number:" + str(i) + "\n" + self.__str__())
-                # csv_export(i, )
-            except sheep_viability_exception:
-                logging.info("All sheeps are dead")
-                return
+            if self.wolf.killed_sheep == self.sheep_amount:
+                logging.info("All sheep are dead!")
+                break
+            logging.info("rounds_number: " + str(i) + "\n" +
+                         self.wolf.__str__() +
+                         "\nNumber of alive sheep: " + str(self.sheep_amount - self.wolf.killed_sheep))
+            logging.debug("rounds_number:" + str(i + 1) + "\n" + self.__str__())
+            self.move_alive_sheep()
+            [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
+            self.move_wolf()
+            # csv_export(i, )
 
     def move_alive_sheep(self):
         [self.change_sheep_coordinates(sheep) for sheep in self.sheep_list]
 
     def move_wolf(self):
         if not self.is_wolf_able_to_eat():
-            self.change_wolf_coordinates(min([x for x in self.sheep_list if x.isAlive], key=lambda sheep: sheep.distance))
+            nearest_sheep = min([sheep for sheep in self.sheep_list if sheep.isAlive],
+                                key=lambda sheep: sheep.distance)
+            logging.info("Wolf is chasing sheep ID: " + str(nearest_sheep.id))
+            self.change_wolf_coordinates(nearest_sheep)
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
@@ -96,10 +100,10 @@ class GameSimulation:
     def is_wolf_able_to_eat(self):
         for sheep in self.sheep_list:
             if sheep.distance <= self.wolf_move_dist and sheep.isAlive:
-                logging.debug("Wolf is eating sheep ID: " + str(sheep.id))
+                logging.info("Wolf killed sheep, ID: " + str(sheep.id))
                 sheep.isAlive = False
                 get_sheep_cords(sheep, self.wolf)
-                self.wolf.sheep_counter += 1
+                self.wolf.killed_sheep += 1
                 return True
         return False
 
