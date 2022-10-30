@@ -2,6 +2,7 @@ import random
 
 from project.logic.mapHelper import is_coordinate_empty
 from project.model.sheep import Sheep
+from project.model.wolf import Wolf
 
 
 class SheepFactory:
@@ -13,7 +14,7 @@ class SheepFactory:
         while len(sheepList) < int(number):
             generatedX = self.draw_value()
             generatedY = self.draw_value()
-            if is_coordinate_empty(generatedX, generatedY, sheepList):
+            if is_coordinate_empty(generatedX, generatedY, sheepList, Wolf(0, 0)):
                 sheepList.append(Sheep(len(sheepList) + 1, generatedX, generatedY))
         return sheepList
 

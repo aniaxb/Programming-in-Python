@@ -1,36 +1,24 @@
 import random
 import math
 
-from project.exceptions.exceptions import sheep_viability_exception
 from project.model.sheep import Sheep
 from project.model.wolf import Wolf
 
 
-def is_coordinate_empty(coX: float, coY: float, entityRepository: list):
-    for entity in entityRepository:
-        if (coX is entity.coX) and (coY is entity.coY):
-            if isinstance(entity, Sheep):
-                return not entity.isAlive
-            elif isinstance(entity, Wolf):
-                return False
+def is_coordinate_empty(coX: float, coY: float, sheep_list: list, wolf: Wolf):
+    if (coX is wolf.coX) and (coY is wolf.coY):
+        return False
+    for entity in sheep_list:
+        if (coX is entity.coX) and (coY is entity.coY) and entity.isAlive:
+            return False
     return True
 
 
-def calculate_distances(entityRepository: list):
-    local_wolf: Wolf = entityRepository[len(entityRepository) - 1]
-    if local_wolf.sheep_counter == len(entityRepository) - 1:
-        raise sheep_viability_exception()
-    entityRepository.remove(local_wolf)
-    shortestDistanceSheep: Sheep = None
-    for entity in entityRepository:
+def calculate_distances(sheep_list: list, wolf: Wolf):
+    for entity in sheep_list:
         if entity.isAlive:
-            entity.distance = round(math.sqrt(pow(entity.get_x() - local_wolf.get_x(), 2) + pow(entity.get_y() - local_wolf.get_y(), 2)), 3)
-            if shortestDistanceSheep is None:
-                shortestDistanceSheep = entity
-            elif entity.distance < shortestDistanceSheep.distance:
-                shortestDistanceSheep = entity
-    entityRepository.append(local_wolf)
-    return shortestDistanceSheep
+            entity.distance = round(
+                math.sqrt(pow(entity.get_x() - wolf.get_x(), 2) + pow(entity.get_y() - wolf.get_y(), 2)), 3)
 
 
 def simulate_direction():

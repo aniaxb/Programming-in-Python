@@ -9,7 +9,7 @@ from project.model.wolf import Wolf
 
 class MyTestCase(unittest.TestCase):
     def test_MapHelper(self):
-        repo = GameSimulation(0, 0, 0, 0).entityRepository
+        repo = GameSimulation(0, 0, 0, 0).sheep_list
         repo.append(Sheep(0, 1, 1))
         repo.append(Sheep(1, 1, 2))
 
