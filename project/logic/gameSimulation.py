@@ -26,7 +26,7 @@ class GameSimulation:
         for i in range(1, rounds_number + 1):
             try:
                 self.move_alive_sheep()
-                calculate_distances(self.sheep_list, self.wolf)
+                [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
                 self.move_wolf()
                 logging.info("rounds_number:" + str(i) + "\n" + self.__str__())
                 # csv_export(i, )
@@ -89,9 +89,9 @@ class GameSimulation:
 
     def change_wolf_coordinates(self, nearest_sheep: Sheep):
         self.wolf.coX += round(
-            self.wolf_move_dist * ((nearest_sheep.get_x() - self.wolf.get_x()) / nearest_sheep.distance), 3)
+            self.wolf_move_dist * ((nearest_sheep.coX - self.wolf.coX) / nearest_sheep.distance), 3)
         self.wolf.coY += round(
-            self.wolf_move_dist * ((nearest_sheep.get_y() - self.wolf.get_y()) / nearest_sheep.distance), 3)
+            self.wolf_move_dist * ((nearest_sheep.coY - self.wolf.coY) / nearest_sheep.distance), 3)
 
     def is_wolf_able_to_eat(self):
         for sheep in self.sheep_list:

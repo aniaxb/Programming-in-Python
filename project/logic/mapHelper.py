@@ -14,11 +14,8 @@ def is_coordinate_empty(coX: float, coY: float, sheep_list: list, wolf: Wolf):
     return True
 
 
-def calculate_distances(sheep_list: list, wolf: Wolf):
-    for entity in sheep_list:
-        if entity.isAlive:
-            entity.distance = round(
-                math.sqrt(pow(entity.get_x() - wolf.get_x(), 2) + pow(entity.get_y() - wolf.get_y(), 2)), 3)
+def calculate_distances(sheep: Sheep, wolf: Wolf):
+    sheep.distance = round(math.sqrt((sheep.coX - wolf.coX) ** 2 + (sheep.coY - wolf.coY) ** 2), 3)
 
 
 def simulate_direction():
