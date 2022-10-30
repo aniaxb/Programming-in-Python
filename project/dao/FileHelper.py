@@ -1,17 +1,22 @@
 import csv
 import logging
 
+from project.exceptions.exceptions import file_exception
 
-def csv_export(round_no, sheep_no):
-    logging.debug("csv_export(", round_no, sheep_no, ")")
-    if round_no == 1:
-        with open('alive.csv', mode='w', newline='') as csv_file:
-            fieldnames = ['round', 'alive']
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerow({'round': round_no, 'alive': sheep_no})
-    else:
-        with open('alive.csv', mode='a', newline='') as csv_file:
-            fieldnames = ['round', 'alive']
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            writer.writerow({'round': round_no, 'alive': sheep_no})
+
+def save_csv(round_number, sheep_amount):
+    try:
+        logging.debug("attempting to write values to the file (" + str(round_number) + ", " + str(sheep_amount) + ")")
+        column_titles = ['round', 'alive']
+        if round_number == 1:
+            logging.debug("Create a new file")
+            with open('alive.csv', mode='w', newline='') as file:
+                file_writer = csv.DictWriter(file, fieldnames=column_titles)
+                file_writer.writeheader()
+                file_writer.writerow({'round': round_number, 'alive': sheep_amount})
+        else:
+            with open('alive.csv', mode='a', newline='') as file:
+                file_writer = csv.DictWriter(file, fieldnames=column_titles)
+                file_writer.writerow({'round': round_number, 'alive': sheep_amount})
+    except Exception:
+        raise file_exception()
