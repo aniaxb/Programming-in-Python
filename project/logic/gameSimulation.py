@@ -1,6 +1,6 @@
 import logging
 
-from project.dao.FileHelper import save_csv
+from project.dao.FileHelper import save_csv, save_json
 from project.exceptions.exceptions import logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import calculate_distances
@@ -35,6 +35,7 @@ class GameSimulation:
             [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
             self.move_wolf()
             save_csv(i, self.sheep_amount - self.wolf.killed_sheep)
+            save_json(i, self.sheep_list, self.wolf)
 
     def move_alive_sheep(self):
         [self.change_sheep_coordinates(sheep) for sheep in self.sheep_list]
