@@ -6,6 +6,7 @@ from project.model.wolf import Wolf
 
 
 class SheepFactory:
+
     def __init__(self, init_pos_limit):
         self.init_pos_limit = init_pos_limit
 
@@ -19,5 +20,4 @@ class SheepFactory:
         return sheepList
 
     def draw_value(self):
-        value = float(random.uniform(-self.init_pos_limit, self.init_pos_limit))
-        return round(value, 3)
+        return round(float(random.uniform(-self.init_pos_limit, self.init_pos_limit)), 3)

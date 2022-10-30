@@ -14,12 +14,12 @@ class MyTestCase(unittest.TestCase):
         repo.append(Sheep(1, 1, 2))
 
         self.assertEqual(len(repo), 2)
-        self.assertEqual(is_coordinate_empty(1, 1, repo), False)
-        self.assertEqual(is_coordinate_empty(1, 2, repo), False)
-        self.assertEqual(is_coordinate_empty(1, 3, repo), True)
+        self.assertEqual(is_coordinate_empty(1, 1, repo, Wolf(0, 0)), False)
+        self.assertEqual(is_coordinate_empty(1, 2, repo, Wolf(0, 0)), False)
+        self.assertEqual(is_coordinate_empty(1, 3, repo, Wolf(0, 0)), True)
 
         repo[0].isAlive = False
-        self.assertEqual(is_coordinate_empty(1, 1, repo), True)
+        self.assertEqual(is_coordinate_empty(1, 1, repo, Wolf(0, 0)), True)
 
     def test_Wolf(self):
         wolf = Wolf(0, 1)
