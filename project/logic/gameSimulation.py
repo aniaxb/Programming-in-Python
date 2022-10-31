@@ -13,11 +13,13 @@ from project.model.wolf import Wolf
 
 class GameSimulation:
 
-    def __init__(self, init_pos_limit, sheep_amount, sheep_move_dist, wolf_move_dist):
+    def __init__(self, init_pos_limit, sheep_amount, sheep_move_dist, wolf_move_dist, wait, directory):
         self.init_pos_limit = init_pos_limit
         self.sheep_amount = sheep_amount
         self.sheep_move_dist = sheep_move_dist
         self.wolf_move_dist = wolf_move_dist
+        self.wait = wait
+        self.directory = directory
         self.sheep_list = list()
         self.wolf = Wolf(0, 0)
 
@@ -27,10 +29,10 @@ class GameSimulation:
             if self.wolf.killed_sheep == self.sheep_amount:
                 logging.info("All sheep are dead!")
                 break
-            logging.info("rounds_number: " + str(i) + "\n" +
-                         self.wolf.__str__() +
-                         "\nNumber of alive sheep: " + str(self.sheep_amount - self.wolf.killed_sheep))
-            logging.debug("rounds_number:" + str(i + 1) + "\n" + self.__str__())
+            logging.info("rounds_number: ", str(i), "\n",
+                         self.wolf.__str__(),
+                         "\nNumber of alive sheep: ", str(self.sheep_amount - self.wolf.killed_sheep))
+            logging.debug("rounds_number: ", str(i + 1), "\n", self.__str__())
             self.move_alive_sheep()
             [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
             self.move_wolf()
@@ -44,12 +46,12 @@ class GameSimulation:
         if not self.is_wolf_able_to_eat():
             nearest_sheep = min([sheep for sheep in self.sheep_list if sheep.isAlive],
                                 key=lambda sheep: sheep.distance)
-            logging.info("Wolf is chasing sheep ID: " + str(nearest_sheep.id))
+            logging.info("Wolf is chasing sheep ID: ", str(nearest_sheep.id))
             self.change_wolf_coordinates(nearest_sheep)
 
     def change_sheep_coordinates(self, sheep: Sheep):
         if not sheep.isAlive:
-            logging.debug("Sheep ID: " + str(sheep.id) + " is dead")
+            logging.debug("Sheep ID: ", str(sheep.id), " is dead")
             return
         genX = sheep.coX
         genY = sheep.coY
@@ -102,7 +104,7 @@ class GameSimulation:
     def is_wolf_able_to_eat(self):
         for sheep in self.sheep_list:
             if sheep.distance <= self.wolf_move_dist and sheep.isAlive:
-                logging.info("Wolf killed sheep, ID: " + str(sheep.id))
+                logging.info("Wolf killed sheep, ID: ", str(sheep.id))
                 sheep.isAlive = False
                 get_sheep_cords(sheep, self.wolf)
                 self.wolf.killed_sheep += 1
