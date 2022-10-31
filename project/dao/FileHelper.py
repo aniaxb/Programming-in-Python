@@ -7,7 +7,7 @@ from project.exceptions.exceptions import file_exception
 filename = 'alive.csv'
 
 
-def save_csv(round_number, sheep_amount):
+def save_csv(round_number, sheep_amount, directory):
     try:
         logging.debug("attempting to write values to the file (" + str(round_number) + ", " + str(sheep_amount) + ")")
         column_titles = ['round', 'alive']
@@ -21,11 +21,11 @@ def save_csv(round_number, sheep_amount):
             with open(filename, mode='a', newline='') as file:
                 file_writer = csv.DictWriter(file, fieldnames=column_titles)
                 file_writer.writerow({'round': round_number, 'alive': sheep_amount})
-    except IOError:
-        raise file_exception()
+    except IOError as e:
+        logging.error("error while trying to save csv file: " + e)
 
 
-def save_json(round_number, sheep_list, wolf):
+def save_json(round_number, sheep_list, wolf, directory):
     simplified_Sheep = list()
     for sheep in sheep_list:
         if sheep.isAlive:

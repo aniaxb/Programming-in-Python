@@ -1,7 +1,6 @@
 import logging
 
 from project.dao.FileHelper import save_csv, save_json
-from project.exceptions.exceptions import logic_exception
 from project.factories.sheepFactory import SheepFactory
 from project.logic.mapHelper import calculate_distances
 from project.logic.mapHelper import get_sheep_cords
@@ -40,8 +39,10 @@ class GameSimulation:
             self.move_alive_sheep()
             [calculate_distances(sheep, self.wolf) for sheep in self.sheep_list if sheep.isAlive]
             self.move_wolf()
-            save_csv(i, self.sheep_amount - self.wolf.killed_sheep)
-            save_json(i, self.sheep_list, self.wolf)
+            save_csv(i, self.sheep_amount - self.wolf.killed_sheep, self.directory)
+            save_json(i, self.sheep_list, self.wolf, self.directory)
+            if self.wait:
+                input("Press a key to continue!")
 
     def move_alive_sheep(self):
         [self.change_sheep_coordinates(sheep) for sheep in self.sheep_list]
@@ -70,7 +71,7 @@ class GameSimulation:
             case "E":
                 genX += self.sheep_move_dist
             case _:
-                raise logic_exception()
+                raise ValueError("the sheep is trying to move in the wrong direction")
         if is_coordinate_empty(genX, genY, self.sheep_list, self.wolf):
             sheep.coX = genX
             sheep.coY = genY
@@ -98,7 +99,7 @@ class GameSimulation:
             sheep.coX = genX - self.sheep_move_dist
             return
         else:
-            logging.debug("Cannot move Sheep!, This entity is blocked")
+            logging.warning("Cannot move Sheep!, This entity is blocked")
 
     def change_wolf_coordinates(self, nearest_sheep: Sheep):
         self.wolf.coX += round(
