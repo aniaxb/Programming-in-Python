@@ -1,5 +1,6 @@
 import logging
 import argparse
+from configparser import ConfigParser
 
 from project.logic.gameSimulation import GameSimulation
 
@@ -10,6 +11,18 @@ def is_positive(value):
         raise argparse.ArgumentTypeError("%s the value cannot be less than 0" % local_value)
     logging.debug("the value entered ", value, " is positive")
     return local_value
+
+
+def config_parser(file):
+    config = ConfigParser()
+    config.read(file)
+    init_pos = config.get('Terrain', 'InitPosLimit')
+    sheep_mov = config.get('Movement', 'SheepMoveDist')
+    wolf_move = config.get('Movement', 'WolfMoveDist')
+    if float(init_pos) < 0 or float(sheep_mov) < 0 or float(wolf_move) < 0:
+        logging.error("the value cannot be less than 0")
+        raise ValueError("value less than 0")
+    return float(init_pos), float(sheep_mov), float(wolf_move)
 
 
 def parameter_parser():
@@ -32,18 +45,39 @@ def parameter_parser():
 def main():
     number_of_sheep = 15
     number_of_rounds = 50
-    init_pos_limit: 10.0
-    sheep_move_dist: 0.5
-    wolf_move_dist: 1.0
-    wait = False
+    init_pos_limit = 10.0
+    sheep_move_dist = 0.5
+    wolf_move_dist = 1.0
     directory = None
-
+    wait = False
     args = parameter_parser()
-    print(args.wait)
 
-    logging.basicConfig(level=logging.INFO)
-    # game = GameSimulation(init_pos_limit, number_of_sheep, sheep_move_dist, wolf_move_dist, wait, directory)
-    # game.start_simulation(number_of_rounds)
+    if args.config:
+        init_pos_limit, sheep_move_dist, wolf_move_dist = config_parser(args.config)
+    if args.directory:
+        directory = args.directory
+    if args.logger_lvl:
+        if args.logger_lvl == "INFO":
+            log_level = logging.INFO
+        elif args.logger_lvl == "DEBUG":
+            log_level = logging.DEBUG
+        elif args.logger_lvl == "WARNING":
+            log_level = logging.WARNING
+        elif args.logger_lvl == "ERROR":
+            log_level = logging.ERROR
+        elif args.logger_lvl == "CRITICAL":
+            log_level = logging.CRITICAL
+        else:
+            raise ValueError("login level unrecognized!")
+        logging.basicConfig(level=log_level, filename="chase.log")
+    if args.round_number:
+        number_of_rounds = args.round_number
+    if args.sheep_number:
+        number_of_sheep = args.sheep_number
+    if args.wait:
+        wait = args.wait
+    game = GameSimulation(init_pos_limit, number_of_sheep, sheep_move_dist, wolf_move_dist, wait, directory)
+    game.start_simulation(number_of_rounds)
 
 
 if __name__ == '__main__':
