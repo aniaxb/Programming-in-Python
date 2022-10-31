@@ -8,8 +8,8 @@ from project.logic.gameSimulation import GameSimulation
 def is_positive(value):
     local_value = int(value)
     if local_value <= 0:
-        raise argparse.ArgumentTypeError("%s the value cannot be less than 0" % local_value)
-    logging.debug("the value entered ", value, " is positive")
+        raise argparse.ArgumentTypeError("the value cannot be less than 0")
+    logging.debug("the value entered: " + value + " is positive")
     return local_value
 
 
