@@ -18,18 +18,15 @@ def save_csv(round_number, sheep_amount, directory):
     try:
         logging.debug("attempting to write values to the file (" + str(round_number) + ", " + str(sheep_amount) + ")")
         column_titles = ['round', 'alive']
-        if round_number == 1:
-            check_path(directory)
-            logging.debug("Create a new file")
-            with open(csv_file_name, mode='w', newline='') as file:
-                file_writer = csv.DictWriter(file, fieldnames=column_titles)
+        logging.debug("Create a new file")
+        mode = lambda x: 'w' if (x == 1) else 'a'
+        with open(csv_file_name, mode=mode(round_number), newline='') as file:
+            file_writer = csv.DictWriter(file, fieldnames=column_titles)
+            if round_number == 1:
+                check_path(directory)
                 file_writer.writeheader()
-                file_writer.writerow({'round': round_number, 'alive': sheep_amount})
-        else:
-            with open(csv_file_name, mode='a', newline='') as file:
-                file_writer = csv.DictWriter(file, fieldnames=column_titles)
-                file_writer.writerow({'round': round_number, 'alive': sheep_amount})
-    except IOError as e:
+            file_writer.writerow({'round': round_number, 'alive': sheep_amount})
+    except OError as e:
         logging.error("error while trying to save csv file: " + e)
 
 
