@@ -130,3 +130,4 @@ dmypy.json
 .idea
 alive.csv
 pos.json
+chase.log
