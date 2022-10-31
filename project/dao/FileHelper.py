@@ -1,10 +1,17 @@
 import csv
 import json
 import logging
+import os
 
-from project.exceptions.exceptions import file_exception
+csv_file_name = 'alive.csv'
+json_file_name = 'pos.json'
 
-filename = 'alive.csv'
+
+def check_path(directory):
+    if directory:
+        logging.debug("Entering a path")
+        os.makedirs(directory, exist_ok=True)
+        os.chdir(directory)
 
 
 def save_csv(round_number, sheep_amount, directory):
@@ -12,13 +19,14 @@ def save_csv(round_number, sheep_amount, directory):
         logging.debug("attempting to write values to the file (" + str(round_number) + ", " + str(sheep_amount) + ")")
         column_titles = ['round', 'alive']
         if round_number == 1:
+            check_path(directory)
             logging.debug("Create a new file")
-            with open(filename, mode='w', newline='') as file:
+            with open(csv_file_name, mode='w', newline='') as file:
                 file_writer = csv.DictWriter(file, fieldnames=column_titles)
                 file_writer.writeheader()
                 file_writer.writerow({'round': round_number, 'alive': sheep_amount})
         else:
-            with open(filename, mode='a', newline='') as file:
+            with open(csv_file_name, mode='a', newline='') as file:
                 file_writer = csv.DictWriter(file, fieldnames=column_titles)
                 file_writer.writerow({'round': round_number, 'alive': sheep_amount})
     except IOError as e:
@@ -40,8 +48,8 @@ def save_json(round_number, sheep_list, wolf, directory):
     }
 
     if round_number == 1:
-        f = open("pos.json", "w")
+        f = open(json_file_name, "w")
     else:
-        f = open("pos.json", "a")
+        f = open(json_file_name, "a")
     f.write(json.dumps(json_message, indent=4))
     f.close()
