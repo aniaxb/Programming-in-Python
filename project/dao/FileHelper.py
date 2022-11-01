@@ -26,7 +26,7 @@ def save_csv(round_number, sheep_amount, directory):
                 check_path(directory)
                 file_writer.writeheader()
             file_writer.writerow({'round': round_number, 'alive': sheep_amount})
-    except OError as e:
+    except IOError as e:
         logging.error("error while trying to save csv file: " + e)
 
 
