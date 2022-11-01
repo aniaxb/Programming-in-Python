@@ -1,8 +1,8 @@
 import random
 import math
 
-from project.model.sheep import Sheep
-from project.model.wolf import Wolf
+from chase.model.sheep import Sheep
+from chase.model.wolf import Wolf
 
 
 def is_coordinate_empty(coX: float, coY: float, sheep_list: list, wolf: Wolf):

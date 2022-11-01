@@ -2,7 +2,7 @@ import logging
 import argparse
 from configparser import ConfigParser
 
-from project.logic.gameSimulation import GameSimulation
+from chase.logic.gameSimulation import GameSimulation
 
 
 def is_positive(value):
@@ -69,7 +69,7 @@ def main():
             log_level = logging.CRITICAL
         else:
             raise ValueError("login level unrecognized!")
-        logging.basicConfig(level=log_level, filename="chase.log")
+        logging.basicConfig(level=log_level, filename="chasee.log")
     if args.round_number:
         number_of_rounds = args.round_number
     if args.sheep_number:

@@ -1,8 +1,8 @@
 import random
 
-from project.logic.mapHelper import is_coordinate_empty
-from project.model.sheep import Sheep
-from project.model.wolf import Wolf
+from chase.logic.mapHelper import is_coordinate_empty
+from chase.model.sheep import Sheep
+from chase.model.wolf import Wolf
 
 
 class SheepFactory:

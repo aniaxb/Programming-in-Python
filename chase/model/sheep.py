@@ -1,4 +1,4 @@
-from project.model.entity import Entity
+from chase.model.entity import Entity
 
 
 class Sheep(Entity):
