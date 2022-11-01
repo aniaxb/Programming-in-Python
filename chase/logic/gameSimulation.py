@@ -1,13 +1,13 @@
 import logging
 
-from project.dao.FileHelper import save_csv, save_json
-from project.factories.sheepFactory import SheepFactory
-from project.logic.mapHelper import calculate_distances
-from project.logic.mapHelper import get_sheep_cords
-from project.logic.mapHelper import is_coordinate_empty
-from project.logic.mapHelper import simulate_direction
-from project.model.sheep import Sheep
-from project.model.wolf import Wolf
+from chase.dao.FileHelper import save_csv, save_json
+from chase.factories.sheepFactory import SheepFactory
+from chase.logic.mapHelper import calculate_distances
+from chase.logic.mapHelper import get_sheep_cords
+from chase.logic.mapHelper import is_coordinate_empty
+from chase.logic.mapHelper import simulate_direction
+from chase.model.sheep import Sheep
+from chase.model.wolf import Wolf
 
 
 class GameSimulation:
