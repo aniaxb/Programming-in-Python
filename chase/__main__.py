@@ -20,8 +20,9 @@ def config_parser(file):
     sheep_mov = config.get('Movement', 'SheepMoveDist')
     wolf_move = config.get('Movement', 'WolfMoveDist')
     if float(init_pos) < 0 or float(sheep_mov) < 0 or float(wolf_move) < 0:
-        logging.error("the value cannot be less than 0")
+        logging.critical("the value cannot be less than 0")
         raise ValueError("value less than 0")
+    logging.debug("parsing the configuration file")
     return float(init_pos), float(sheep_mov), float(wolf_move)
 
 
@@ -39,6 +40,7 @@ def parameter_parser():
                         dest='sheep_number', type=is_positive, metavar='NUM')
     parser.add_argument('-w', '--wait', action='store_true',
                         help="if simulation should be paused at the end of each round", dest='wait')
+    logging.debug("parsing args")
     return parser.parse_args()
 
 
@@ -68,6 +70,7 @@ def main():
         elif args.logger_lvl == "CRITICAL":
             log_level = logging.CRITICAL
         else:
+            logging.error("login level unrecognized!")
             raise ValueError("login level unrecognized!")
         logging.basicConfig(level=log_level, filename="chasee.log")
     if args.round_number:
