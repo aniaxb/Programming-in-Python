@@ -1,3 +1,4 @@
+import logging
 import random
 
 from chase.logic.mapHelper import is_coordinate_empty
@@ -17,6 +18,7 @@ class SheepFactory:
             generatedY = self.draw_value()
             if is_coordinate_empty(generatedX, generatedY, sheepList, Wolf(0, 0)):
                 sheepList.append(Sheep(len(sheepList) + 1, generatedX, generatedY))
+        logging.debug("creating sheep in the amount of: " + str(number))
         return sheepList
 
     def draw_value(self):
