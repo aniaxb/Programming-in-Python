@@ -72,7 +72,7 @@ def main():
         else:
             logging.error("login level unrecognized!")
             raise ValueError("login level unrecognized!")
-        logging.basicConfig(level=log_level, filename="chasee.log")
+        logging.basicConfig(level=log_level, filename="chase.log", force=True)
     if args.round_number:
         number_of_rounds = args.round_number
     if args.sheep_number:
