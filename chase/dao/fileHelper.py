@@ -36,22 +36,29 @@ def save_json(round_number, sheep_list, wolf):
         simplified_Sheep = list()
         for sheep in sheep_list:
             if sheep.isAlive:
-                simplified_Sheep.append(
-                    "ID: " + str(sheep.id) + ", " + str(round(sheep.coX, 3)) + ", " + str(round(sheep.coY, 3)))
+                json_sheep = {
+                    "ID": str(sheep.id),
+                    "coX": str(round(sheep.coX, 3)),
+                    "coY": str(round(sheep.coY, 3))
+                }
             else:
-                simplified_Sheep.append("ID: " + str(sheep.id) + ", NONE")
+                json_sheep = {
+                    "ID": str(sheep.id),
+                    "coX": "null",
+                    "coY": "null"
+                }
+            simplified_Sheep.append(json_sheep)
         json_message = {
             "round_number": round_number,
             "Sheep": simplified_Sheep,
             "wolf": str(wolf.coX) + ", " + str(wolf.coY)
         }
-
-        if round_number == 1:
-            logging.info("Create a new json file")
-            f = open(json_file_name, "w")
-        else:
-            f = open(json_file_name, "a")
-        f.write(json.dumps(json_message, indent=4))
-        f.close()
+        data = []
+        if round_number != 1:
+            with open(json_file_name, "r") as file:
+                data = json.load(file)
+        data.append(json_message)
+        with open(json_file_name, "w") as file:
+            json.dump(data, file, indent=4)
     except IOError as e:
         logging.error("error while trying to save json file: " + e)
