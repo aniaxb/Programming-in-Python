@@ -17,7 +17,7 @@ class SheepFactory:
             generatedX = self.draw_value()
             generatedY = self.draw_value()
             if is_coordinate_empty(generatedX, generatedY, sheepList, Wolf(0, 0)):
-                sheepList.append(Sheep(len(sheepList) + 1, generatedX, generatedY))
+                sheepList.append(Sheep(generatedX, generatedY))
         logging.debug("creating sheep in the amount of: " + str(number))
         return sheepList
 

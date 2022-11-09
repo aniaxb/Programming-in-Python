@@ -1,6 +1,6 @@
 import logging
 
-from chase.dao.FileHelper import save_csv, save_json
+from chase.dao.fileHelper import save_csv, save_json
 from chase.factories.sheepFactory import SheepFactory
 from chase.logic.mapHelper import calculate_distances
 from chase.logic.mapHelper import get_sheep_cords
